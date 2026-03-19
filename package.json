@@ -1,6 +1,6 @@
 {
   "name": "claude-wsl-bridge",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "WSL clipboard bridge for Claude Code image paste support on Windows hosts.",
   "license": "MIT",
   "type": "module",
