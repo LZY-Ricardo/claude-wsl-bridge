@@ -1,0 +1,54 @@
+{
+  "name": "claude-wsl-bridge",
+  "version": "0.3.0",
+  "description": "WSL clipboard bridge for Claude Code image paste support on Windows hosts.",
+  "license": "MIT",
+  "type": "module",
+  "preferGlobal": true,
+  "os": [
+    "linux"
+  ],
+  "keywords": [
+    "claude-code",
+    "wsl",
+    "clipboard",
+    "windows",
+    "cli",
+    "bridge"
+  ],
+  "homepage": "https://github.com/LZY-Ricardo/claude-wsl-bridge#readme",
+  "bugs": {
+    "url": "https://github.com/LZY-Ricardo/claude-wsl-bridge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LZY-Ricardo/claude-wsl-bridge.git"
+  },
+  "bin": {
+    "ccw": "bin/ccw.js",
+    "claude-wsl": "bin/ccw.js",
+    "ccw-doctor": "bin/ccw-doctor.js",
+    "ccw-pack": "bin/ccw-pack.js"
+  },
+  "scripts": {
+    "check": "node ./scripts/check.mjs",
+    "doctor": "node ./bin/ccw-doctor.js",
+    "pack": "npm pack",
+    "pack:dev": "node ./bin/ccw-pack.js /tmp/claude-wsl-bridge-dev.tar.gz",
+    "help": "node ./bin/ccw.js --help",
+    "install:local": "node ./scripts/install-local.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin",
+    "runtime",
+    "docs/ROADMAP.md",
+    "docs/TUTORIAL.md",
+    "docs/VERSION",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ]
+}

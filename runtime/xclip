@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+source "${script_dir}/bridge-common.sh"
+
+real_xclip="${CLAUDE_WSL_REAL_XCLIP:-/usr/bin/xclip}"
+orig_args=("$@")
+
+delegate() {
+  exec "${real_xclip}" "${orig_args[@]}"
+}
+
+selection=""
+target=""
+want_output=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -selection|--selection)
+      [[ $# -ge 2 ]] || delegate
+      selection="$2"
+      shift 2
+      ;;
+    -t|--target)
+      [[ $# -ge 2 ]] || delegate
+      target="$2"
+      shift 2
+      ;;
+    -o|-out)
+      want_output=1
+      shift
+      ;;
+    *)
+      delegate
+      ;;
+  esac
+done
+
+if [[ "${selection}" != "clipboard" || "${want_output}" -ne 1 || ! bridge_available ]]; then
+  delegate
+fi
+
+case "${target}" in
+  TARGETS)
+    emit_targets_from_bridge || delegate
+    ;;
+  image/png|image/bmp)
+    emit_png_bytes_from_bridge || delegate
+    ;;
+  text/plain|"")
+    emit_text_from_bridge || delegate
+    ;;
+  *)
+    delegate
+    ;;
+esac

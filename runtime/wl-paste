@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+source "${script_dir}/bridge-common.sh"
+
+real_wl_paste="${CLAUDE_WSL_REAL_WL_PASTE:-/usr/bin/wl-paste}"
+orig_args=("$@")
+
+delegate() {
+  exec "${real_wl_paste}" "${orig_args[@]}"
+}
+
+list_only=0
+mime_type=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -l|--list-types)
+      list_only=1
+      shift
+      ;;
+    --type)
+      [[ $# -ge 2 ]] || delegate
+      mime_type="$2"
+      shift 2
+      ;;
+    *)
+      delegate
+      ;;
+  esac
+done
+
+if ! bridge_available; then
+  delegate
+fi
+
+if [[ "${list_only}" -eq 1 ]]; then
+  emit_targets_from_bridge || delegate
+  exit 0
+fi
+
+case "${mime_type}" in
+  image/png|image/bmp)
+    emit_png_bytes_from_bridge || delegate
+    ;;
+  ""|text/plain)
+    emit_text_from_bridge || delegate
+    ;;
+  *)
+    delegate
+    ;;
+esac

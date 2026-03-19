@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+script_dir="${CLAUDE_WSL_BRIDGE_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)}"
+source "$script_dir/bridge-common.sh"
+
+print_help() {
+  cat <<'HELP'
+Usage:
+  ccw [claude args]
+  claude-wsl [claude args]
+  ccw --help
+  ccw --version
+  ccw --doctor
+
+Commands:
+  --help      Show help
+  --version   Show bridge version
+  --doctor    Run environment diagnostics
+
+Examples:
+  ccw
+  ccw --version
+  ccw --doctor
+  ccw -p "hello"
+HELP
+}
+
+real_xclip="${CLAUDE_WSL_REAL_XCLIP:-$(command -v xclip || true)}"
+real_wl_paste="${CLAUDE_WSL_REAL_WL_PASTE:-$(command -v wl-paste || true)}"
+export CLAUDE_WSL_BRIDGE_DIR="$script_dir"
+export CLAUDE_WSL_REAL_XCLIP="$real_xclip"
+export CLAUDE_WSL_REAL_WL_PASTE="$real_wl_paste"
+export PATH="$script_dir:$PATH"
+
+case "${1:-}" in
+  --help|-h)
+    print_help
+    exit 0
+    ;;
+  --version|-V)
+    bridge_version
+    exit 0
+    ;;
+  --doctor)
+    exec "$script_dir/doctor.sh"
+    ;;
+  '')
+    exec claude
+    ;;
+  *)
+    exec claude "$@"
+    ;;
+esac
