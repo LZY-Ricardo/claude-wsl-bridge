@@ -1,5 +1,5 @@
-claude-wsl-bridge 0.3.1
+claude-wsl-bridge 0.3.2
 installed_at=2026-03-19
 install_root=/home/ricardo/.local/share/claude-wsl-bridge
 entrypoints=/home/ricardo/.local/bin/ccw,/home/ricardo/.local/bin/claude-wsl,/home/ricardo/.local/bin/ccw-doctor,/home/ricardo/.local/bin/ccw-pack
-notes=User-level WSL bridge for Claude Code image clipboard support via Windows PowerShell; includes CI and tag-triggered auto publish workflow with Trusted Publisher support
+notes=User-level WSL bridge for Claude Code image clipboard support via Windows PowerShell; verified CI with updated Trusted Publishing runtime requirements
