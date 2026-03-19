@@ -94,6 +94,8 @@ ccw-doctor
 
 按 npm 官方文档，GitHub Actions 可以通过 OIDC 做 trusted publishing。这样不需要长期有效的 `NPM_TOKEN`，风险更低，且在公共仓库/公共包场景下会自动生成 provenance。
 
+按 npm 当前官方要求，Trusted Publishing 需要满足对应的运行时版本要求。当前 workflow 已切到 `Node 24`，避免因为过低的 Node / npm CLI 版本导致 OIDC 发布不生效。
+
 ### 你还需要做的仓库外配置
 
 在 npm 包页面为 `claude-wsl-bridge` 配置 Trusted Publisher：
